@@ -10,7 +10,11 @@ pipeline {
                 apt update
                 apt upgrade -y
                 apt-get install python3 -y
-                '''
+                apt-get install python3-venv-y
+		apt-get install python3-pip-y
+		python3 -m venv env
+		. env/bin/activate
+		python3 -m pip install DateTime
             }
         }
         stage('Test') {
@@ -23,7 +27,8 @@ pipeline {
         stage('Deliver') {
             steps {
                 sh '''
-                echo "Ready to deliver"
+                . env/bin/activate
+		python3 py_test.py
                 '''
             }
         }
